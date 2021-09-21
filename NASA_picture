@@ -13,11 +13,19 @@ from dotenv import load_dotenv
 
 BASE_URL = 'https://api.nasa.gov/planetary/apod?api_key='
 
+def help():
+    print("USAGE")
+    print("\t./NASA_picture")
+    print("")
+    print("DESCRIPTION")
+    print("\tNASA image of the day to wallpaper")
+
 def open_picture(url):
     load_dotenv()
     PATH_PICTURE = os.getenv('PATH_PICTURE')
     this_uuid = str(uuid.uuid4()) + ".jpg"
     im = Image.open(requests.get(url, stream=True).raw)
+    print(PATH_PICTURE + this_uuid)
     im.save(PATH_PICTURE + this_uuid)
     print(this_uuid)
     os.system("gsettings set org.gnome.desktop.background picture-uri file://" + PATH_PICTURE + this_uuid)
@@ -25,9 +33,12 @@ def open_picture(url):
 def main():
     load_dotenv()
     KEY = os.getenv('NASA_API_KEY')
-    print(KEY)
     response = urlopen(BASE_URL + KEY)
-    data_json = json.loads(response.read())
+    try:
+        data_json = json.loads(response.read())
+    except ValueError:
+        print("Decoding JSON has failed")
+        exit(84)
     open_picture(data_json['hdurl'])
 
 try:
