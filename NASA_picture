@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+from PIL import Image
+import PIL
+import requests
+import json
+import uuid
+import sys
+import os
+import traceback
+from urllib.request import urlopen
+from dotenv import load_dotenv
+
+BASE_URL = 'https://api.nasa.gov/planetary/apod?api_key='
+
+def open_picture(url):
+    load_dotenv()
+    PATH_PICTURE = os.getenv('PATH_PICTURE')
+    this_uuid = str(uuid.uuid4()) + ".jpg"
+    im = Image.open(requests.get(url, stream=True).raw)
+    im.save(PATH_PICTURE + this_uuid)
+    print(this_uuid)
+    os.system("gsettings set org.gnome.desktop.background picture-uri file://" + PATH_PICTURE + this_uuid)
+
+def main():
+    load_dotenv()
+    KEY = os.getenv('NASA_API_KEY')
+    print(KEY)
+    response = urlopen(BASE_URL + KEY)
+    data_json = json.loads(response.read())
+    open_picture(data_json['hdurl'])
+
+try:
+    if len(sys.argv) == 2 and sys.argv[1] == "-h":
+        help()
+        exit(0)
+    else:
+        main()
+        exit(0)
+except Exception as e:
+    traceback.print_exception(type(e), e, e.__traceback__)
+    exit(84)
