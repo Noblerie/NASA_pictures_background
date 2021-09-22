@@ -2,7 +2,9 @@
 
 ## Description
 
-Set the NASA image of the day to wallpaper and save this image inside "NASA_pictures" folder. You can get your NASA API key on this website: https://api.nasa.gov/
+Set the NASA image of the day to gnome wallpaper and save this image inside "NASA_pictures" folder. 
+You can get your NASA API key on this website: https://api.nasa.gov/
+
 
 --------
 ## Usage Example
@@ -15,6 +17,8 @@ Here is a quick example of how to use it
 
 --------
 ## .env setup
+
+Create .env file in the root and fill it like that
 
 ```
 NASA_API_KEY=this-is-api-key
