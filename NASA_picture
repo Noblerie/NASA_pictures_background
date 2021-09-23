@@ -34,7 +34,7 @@ def main():
     PATH_PICTURE = os.getenv('PATH_PICTURE')
     response = urlopen(BASE_URL + KEY)
     data_json = json.loads(response.read())
-    if "key1" in data_json:
+    if "hdurl" in data_json:
         print("this will execute")
         open_picture(data_json['hdurl'], PATH_PICTURE)
     else:
